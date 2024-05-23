@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a49e1c68-1985-4f5a-8dae-0d5431d42fc6" name="Changes" comment="добавление типизации для набора кнопок,блока фильтрации и хука с функцией по filter">
+    <list default="true" id="a49e1c68-1985-4f5a-8dae-0d5431d42fc6" name="Changes" comment="lesson 1 - 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Todolist.tsx" afterDir="false" />
@@ -93,9 +93,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1716454012494</updated>
-      <workItem from="1716454014631" duration="1632000" />
+      <workItem from="1716454014631" duration="4135000" />
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="lesson 1 - 3">
+      <option name="closed" value="true" />
+      <created>1716455784100</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1716455784100</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -104,6 +112,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="вынес логику в отдельную компоненту" />
     <MESSAGE value="добавление типизации для набора кнопок,блока фильтрации и хука с функцией по filter" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавление типизации для набора кнопок,блока фильтрации и хука с функцией по filter" />
+    <MESSAGE value="lesson 1 - 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="lesson 1 - 3" />
   </component>
 </project>
