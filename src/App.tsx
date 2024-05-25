@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TasksType, Todolist} from "./Todolist";
 import {v1} from "uuid";
+import {AddItemForm} from "./AddItemForm";
 
 // Типизация для блока кнопок
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
@@ -48,8 +49,6 @@ function App() {
         }
         setTasks(newTodolistTasks)
     }
-
-
     // функция для фильтрации по кнопкам
     const changeFilter = (todolistId: string, filter: FilterValuesType) => {
         setTodolists(todolists.map(tl => (tl.id === todolistId ? {...tl, filter} : tl)))
@@ -80,8 +79,31 @@ function App() {
         // засетаем в state копию объекта
         setTasks({...tasks})
     }
+
+    // функчия добавления тудулиста
+    const addTodolist = (title: string) => {
+        const todolistID = v1()
+        const newTodolist: TodolistType = {id: todolistID, title: title, filter: 'All'}
+        setTodolists([newTodolist, ...todolists])
+        setTasks({...tasks, [todolistID]: []})
+    }
+
+    const updateTask = (todolistId: string, taskId: string, newTitle: string) => {
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map(ts => ts.id === taskId ? {...ts, title: newTitle} : ts)
+        })
+    }
+
+    const updateTodolist = (todolistId: string, title: string) => {
+        setTodolists(todolists.map(td => td.id === todolistId ? {...td, title: title} : td))
+    }
+
     return (
         <div className="App">
+
+            <AddItemForm addItem={addTodolist}/>
+
             {todolists.map(tl => {
 
                 // блок фильтрации
@@ -96,9 +118,10 @@ function App() {
 
                 return (
                     <Todolist
-                        removeTodolist={removeTodolist}
-                        todolistId={tl.id}
+                        updateTodolist={updateTodolist}
+                        updateTask={updateTask}
                         key={tl.id}
+                        todolistId={tl.id}
                         title={tl.title}
                         tasks={tasksForTodolist}
                         removeTask={removeTask}
@@ -106,6 +129,7 @@ function App() {
                         addTask={addTask}
                         changeTaskStatus={changeTaskStatus}
                         filter={tl.filter}
+                        removeTodolist={removeTodolist}
                     />
                 )
             })}
