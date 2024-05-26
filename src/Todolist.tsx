@@ -9,7 +9,7 @@ import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
-import {filterButtonsContainerSx} from "./Todolist.styles";
+import {filterButtonsContainerSx, getListItemSx} from "./Todolist.styles";
 
 
 export type TasksType = {
@@ -60,8 +60,6 @@ export const Todolist = (props: TodolistPropsType) => {
                 <IconButton onClick={removeTodolistHandler}>
                     <DeleteIcon/>
                 </IconButton>
-                {/*<Button title={'x'} onClick={removeTodolistHandler}/>*/}
-
 
             </h3>
 
@@ -89,11 +87,8 @@ export const Todolist = (props: TodolistPropsType) => {
                             return (
                                 <ListItem
                                     key={task.id}
-                                    sx={{
-                                        p: 0,
-                                        justifyContent: 'space-between',
-                                        opacity: task.isDone ? 0.5 : 1
-                                    }}
+                                    sx={getListItemSx(task.isDone)}
+
 
                                     className={task.isDone ? 'is-done' : ''}>
 

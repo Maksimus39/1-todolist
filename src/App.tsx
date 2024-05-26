@@ -4,11 +4,13 @@ import {TasksType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import AppBar from '@mui/material/AppBar';
-import {Container, Paper, Toolbar} from "@mui/material";
+import {Container, Paper, Switch, Toolbar} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
+import {MenuButton} from "./MenuButton";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 
 // Типизация для блока кнопок
@@ -24,9 +26,12 @@ type TodolistType = {
 export type TasksStateType = {
     [key: string]: TasksType[]
 }
-
+// смена темы
+type ThemeMode = 'dark' | 'light'
 
 function App() {
+    // смена темы
+    const [themeMode, setThemeMode] = useState<ThemeMode>('light');
 
     let todolistID1 = v1()
     let todolistID2 = v1()
@@ -46,6 +51,16 @@ function App() {
             {id: v1(), title: 'Rest API', isDone: true},
             {id: v1(), title: 'GraphQL', isDone: false},
         ],
+    })
+
+    // add theme
+    const theme = createTheme({
+        palette: {
+            mode: themeMode === 'light' ? 'light' : 'dark',
+            primary: {
+                main: '#2556c9'
+            }
+        }
     })
 
     // функция удаления таски
@@ -105,23 +120,37 @@ function App() {
     const updateTodolist = (todolistId: string, title: string) => {
         setTodolists(todolists.map(td => td.id === todolistId ? {...td, title: title} : td))
     }
+    // функционал о смене темы
+    const changeModeHandler = () => {
+        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    }
 
     return (
         <div>
-            <AppBar position='static' sx={{mb:'30px'}}>
-                <Toolbar>
-                    <IconButton color={'inherit'}>
-                        <MenuIcon/>
-                    </IconButton>
-                    <Button color='inherit'>Login</Button>
-                </Toolbar>
-            </AppBar>
+
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <AppBar position='static' sx={{mb: '30px'}}>
+                    <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
+                        <IconButton color={'inherit'}>
+                            <MenuIcon/>
+                        </IconButton>
+
+                        <div>
+                            <MenuButton>Login</MenuButton>
+                            <MenuButton>Logout</MenuButton>
+                            <MenuButton background={theme.palette.primary.dark}>Faq</MenuButton>
+                            <Switch color={'default'} onChange={changeModeHandler}/>
+                        </div>
+
+                    </Toolbar>
+                </AppBar>
 
 
-            <Container fixed>
-                <Grid container sx={{mb:'30px'}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
+                <Container fixed>
+                    <Grid container sx={{mb: '30px'}}>
+                        <AddItemForm addItem={addTodolist}/>
+                    </Grid>
                     <Grid container spacing={4}>
 
                         {todolists.map(tl => {
@@ -138,7 +167,7 @@ function App() {
 
                             return (
                                 <Grid>
-                                    <Paper sx={{p:'0 20px 20px 20px'}}>
+                                    <Paper sx={{p: '0 20px 20px 20px'}}>
                                         <Todolist
                                             updateTodolist={updateTodolist}
                                             updateTask={updateTask}
@@ -159,7 +188,10 @@ function App() {
                         })}
                     </Grid>
 
-            </Container>
+                </Container>
+
+            </ThemeProvider>
+
 
         </div>
     );
