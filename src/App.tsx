@@ -17,7 +17,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
 // Типизация для массива тудулистов
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
