@@ -10,7 +10,7 @@ let initialState: TodolistType[] = [
     {id: todolistID2, title: 'What to buy', filter: 'All'},
 ]
 
-export let todolistReducer = (state: TodolistType[] = initialState, action: ActionsType) => {
+export let todolistReducer = (state: TodolistType[] = initialState, action: ActionsType): TodolistType[] => {
     switch (action.type) {
         case 'REMOVE-TODOLIST': {
             return state.filter(td => td.id !== action.payload.id)
@@ -26,7 +26,10 @@ export let todolistReducer = (state: TodolistType[] = initialState, action: Acti
             return state.map(td => td.id === action.payload.id ? {...td, title: action.payload.title} : td)
         }
         case 'CHANGE-TODOLIST-FILTER': {
-            return state.map(td => td.id === action.payload.id ? {...td, filter: action.payload.filter} : td)
+            return state.map(td => td.id === action.payload.id ? {
+                ...td,
+                filter: action.payload.filter
+            } : td)
         }
         default:
             throw new Error('Unknown action type')
@@ -46,7 +49,7 @@ export const addTodolistAC = (title: string): AddTodolistActionType => {
         type: 'ADD-TODOLIST',
         payload: {
             title: title,
-            todolistID:v1()
+            todolistID: v1()
         }
     } as const
 }
@@ -80,7 +83,7 @@ export type AddTodolistActionType = {
     type: 'ADD-TODOLIST',
     payload: {
         title: string
-        todolistID:string
+        todolistID: string
     }
 }
 export type ChangeTodolistTitleActionType = {
@@ -94,7 +97,7 @@ export type ChangeTodolistFilterActionType = {
     type: 'CHANGE-TODOLIST-FILTER',
     payload: {
         id: string,
-        filter: string
+        filter: FilterValuesType
     }
 }
 

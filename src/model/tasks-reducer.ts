@@ -36,7 +36,7 @@ export let tasksReducer = (state: TasksStateType = initialState, action: Actions
         case "CHANGE-TASK-STATUS": {
             return {
                 ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].map(ts => ts.id ? {
+                [action.payload.todolistId]: state[action.payload.todolistId].map(ts => ts.id === action.payload.taskId ? {
                     ...ts,
                     isDone: action.payload.taskStatus
                 } : ts)
@@ -56,8 +56,8 @@ export let tasksReducer = (state: TasksStateType = initialState, action: Actions
                 ...state, [action.payload.todolistID]: []
             }
         }
-        case "REMOVE-TODOLIST":{
-           const stateCopy={...state}
+        case "REMOVE-TODOLIST": {
+            const stateCopy = {...state}
             delete stateCopy[action.payload.id]
             return stateCopy
         }
@@ -77,7 +77,6 @@ export const removeTaskAC = (todolistId: string, taskId: string) => {
         }
     } as const
 }
-
 export const addTaskAC = (todolistId: string, nameTasks: string) => {
     return {
         type: "ADD-TASKS",
@@ -87,7 +86,6 @@ export const addTaskAC = (todolistId: string, nameTasks: string) => {
         }
     } as const
 }
-
 export const changeTaskStatusAC = (todolistId: string, taskId: string, taskStatus: boolean) => {
     return {
         type: 'CHANGE-TASK-STATUS',
@@ -98,7 +96,6 @@ export const changeTaskStatusAC = (todolistId: string, taskId: string, taskStatu
         }
     } as const
 }
-
 export const changeTaskTitleAC = (todolistId: string, taskId: string, newTitle: string) => {
     return {
         type: 'CHANGE-TASK-TITLE',
@@ -110,6 +107,7 @@ export const changeTaskTitleAC = (todolistId: string, taskId: string, newTitle: 
     } as const
 }
 
+
 // Создание ActionType
 export type RemoveTaskActionType = {
     type: "REMOVE-TASK",
@@ -118,7 +116,6 @@ export type RemoveTaskActionType = {
         taskId: string
     }
 }
-
 export type AddTaskActionType = {
     type: "ADD-TASKS",
     payload: {
@@ -126,7 +123,6 @@ export type AddTaskActionType = {
         nameTasks: string
     }
 }
-
 export type changeTaskStatusActionType = {
     type: 'CHANGE-TASK-STATUS',
     payload: {
@@ -135,7 +131,6 @@ export type changeTaskStatusActionType = {
         taskStatus: boolean
     }
 }
-
 export type ChangeTaskTitleActionCreator = {
     type: "CHANGE-TASK-TITLE",
     payload: {
@@ -150,4 +145,6 @@ export type ActionsType =
     RemoveTaskActionType
     | AddTaskActionType
     | changeTaskStatusActionType
-    | ChangeTaskTitleActionCreator | AddTodolistActionType | RemoveTodolistActionType
+    | ChangeTaskTitleActionCreator
+    | AddTodolistActionType
+    | RemoveTodolistActionType
