@@ -3,8 +3,8 @@ import {v1} from "uuid";
 import {TasksType} from "../Todolist";
 import {AddTodolistActionType, RemoveTodolistActionType} from "./todolist-reducer";
 
-let todolistID1 = v1()
-let todolistID2 = v1()
+export let todolistID1 = v1()
+export let todolistID2 = v1()
 
 const initialState: TasksStateType = {
     [todolistID1]: [
@@ -45,7 +45,7 @@ export let tasksReducer = (state: TasksStateType = initialState, action: Actions
         case "CHANGE-TASK-TITLE": {
             return {
                 ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].map(ts => ts.id ? {
+                [action.payload.todolistId]: state[action.payload.todolistId].map(ts => ts.id === action.payload.taskId ? {
                     ...ts,
                     title: action.payload.newTitle
                 } : ts)
@@ -62,7 +62,7 @@ export let tasksReducer = (state: TasksStateType = initialState, action: Actions
             return stateCopy
         }
         default:
-            throw new Error('Unknown action type')
+            return state
     }
 
 }
@@ -77,6 +77,7 @@ export const removeTaskAC = (todolistId: string, taskId: string) => {
         }
     } as const
 }
+
 export const addTaskAC = (todolistId: string, nameTasks: string) => {
     return {
         type: "ADD-TASKS",
@@ -86,6 +87,7 @@ export const addTaskAC = (todolistId: string, nameTasks: string) => {
         }
     } as const
 }
+
 export const changeTaskStatusAC = (todolistId: string, taskId: string, taskStatus: boolean) => {
     return {
         type: 'CHANGE-TASK-STATUS',
@@ -96,6 +98,7 @@ export const changeTaskStatusAC = (todolistId: string, taskId: string, taskStatu
         }
     } as const
 }
+
 export const changeTaskTitleAC = (todolistId: string, taskId: string, newTitle: string) => {
     return {
         type: 'CHANGE-TASK-TITLE',

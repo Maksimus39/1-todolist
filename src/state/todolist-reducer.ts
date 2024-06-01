@@ -1,9 +1,9 @@
 import {v1} from "uuid";
 import {FilterValuesType, TodolistType} from "../App";
+import {todolistID1, todolistID2} from "./tasks-reducer";
 
 
-let todolistID1 = v1()
-let todolistID2 = v1()
+
 
 let initialState: TodolistType[] = [
     {id: todolistID1, title: 'What to learn', filter: 'All'},
@@ -32,7 +32,7 @@ export let todolistReducer = (state: TodolistType[] = initialState, action: Acti
             } : td)
         }
         default:
-            throw new Error('Unknown action type')
+           return state
     }
 }
 

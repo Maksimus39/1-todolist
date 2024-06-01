@@ -1,7 +1,6 @@
-import React, {useReducer, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {TasksType, Todolist} from "./Todolist";
-import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import AppBar from '@mui/material/AppBar';
 import {Container, Paper, Switch, Toolbar} from "@mui/material";
@@ -11,14 +10,10 @@ import Grid from "@mui/material/Unstable_Grid2";
 import {MenuButton} from "./MenuButton";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
-    todolistReducer
-} from "./state/todolist-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./state/todolist-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "./state/store";
 
 
 // Типизация для блока кнопок
@@ -37,29 +32,17 @@ export type TasksStateType = {
 // смена темы
 type ThemeMode = 'dark' | 'light'
 
-function AppWithReducers() {
+function AppWithRedux() {
     // смена темы
     const [themeMode, setThemeMode] = useState<ThemeMode>('light');
 
-    let todolistID1 = v1()
-    let todolistID2 = v1()
 
-    let [todolists, dispatchToTodolistReducer] = useReducer(todolistReducer, [
-        {id: todolistID1, title: 'What to learn', filter: 'All'},
-        {id: todolistID2, title: 'What to buy', filter: 'All'},
-    ])
+    // хуки из Redux
+    const dispatch = useDispatch();
+    const todolists = useSelector<AppRootState, TodolistType[]>(state => state.todolist);
+    const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks);
 
-    let [tasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
-        [todolistID1]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false},
-        ],
-        [todolistID2]: [
-            {id: v1(), title: 'Rest API', isDone: true},
-            {id: v1(), title: 'GraphQL', isDone: false},
-        ],
-    })
+
 
     // add theme
     const theme = createTheme({
@@ -74,44 +57,44 @@ function AppWithReducers() {
     // функция удаления таски
     const removeTask = (todolistId: string, taskId: string) => {
         const action = removeTaskAC(todolistId, taskId)
-        dispatchToTasksReducer(action)
+        dispatch(action)
     }
     // функция для фильтрации по кнопкам
     const changeFilter = (todolistId: string, filter: FilterValuesType) => {
         const action = changeTodolistFilterAC(todolistId, filter)
-        dispatchToTodolistReducer(action)
+        dispatch(action)
     }
     // добавление таски
     const addTask = (todolistId: string, nameTasks: string) => {
         const action = addTaskAC(todolistId, nameTasks)
-        dispatchToTasksReducer(action)
+        dispatch(action)
     }
     // state checkbox
     const changeTaskStatus = (todolistId: string, taskId: string, taskStatus: boolean) => {
         const action = changeTaskStatusAC(todolistId, taskId, taskStatus)
-        dispatchToTasksReducer(action)
+        dispatch(action)
     }
 
     const removeTodolist = (todolistId: string) => {
         const action = removeTodolistAC(todolistId)
-        dispatchToTodolistReducer(action)
-        dispatchToTasksReducer(action)
+        dispatch(action)
+
     }
 
     // функчия добавления тудулиста
     const addTodolist = (title: string) => {
         const action = addTodolistAC(title)
-        dispatchToTodolistReducer(action)
-        dispatchToTasksReducer(action)
+        dispatch(action)
+
     }
 
     const updateTask = (todolistId: string, taskId: string, newTitle: string) => {
-        dispatchToTasksReducer(changeTaskTitleAC(todolistId, taskId, newTitle))
+        dispatch(changeTaskTitleAC(todolistId, taskId, newTitle))
     }
 
     const updateTodolist = (todolistId: string, title: string) => {
         const action = changeTodolistTitleAC(todolistId, title)
-        dispatchToTodolistReducer(action)
+        dispatch(action)
     }
     // функционал о смене темы
     const changeModeHandler = () => {
@@ -190,4 +173,4 @@ function AppWithReducers() {
     );
 }
 
-export default AppWithReducers;
+export default AppWithRedux;
