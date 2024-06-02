@@ -189,5 +189,3 @@ function AppWithReducers() {
         </div>
     );
 }
-
-export default AppWithReducers;

@@ -1,15 +1,14 @@
-import React, {ChangeEvent} from "react";
+import React, {memo, useCallback, useMemo} from "react";
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
-import {filterButtonsContainerSx, getListItemSx} from "./Todolist.styles";
+import {filterButtonsContainerSx} from "./Todolist.styles";
+import {ButtonMemo} from "./ButtonMemo";
+import {Task} from "./Task";
 
 
 export type TasksType = {
@@ -34,27 +33,48 @@ type TodolistPropsType = {
 }
 
 
-export const Todolist = (props: TodolistPropsType) => {
+export const Todolist = memo((props: TodolistPropsType) => {
+
 
     const changeFilterTasksHandler = (filter: FilterValuesType) => {
         props.changeFilter(props.todolistId, filter)
     }
+
+
     const removeTodolistHandler = () => {
         props.removeTodolist(props.todolistId)
     }
     // функция обёртка для двух компонент
-    const addTasksCallback = (nameTasks: string) => {
+    const addTasksCallback = useCallback((nameTasks: string) => {
         props.addTask(props.todolistId, nameTasks)
-    }
+    }, [props.addTask, props.todolistId])
 
-    const updateTodolistHandler = (title: string) => {
+    const updateTodolistHandler = useCallback((title: string) => {
         props.updateTodolist(props.todolistId, title)
-    }
+    }, [props.updateTodolist, props.todolistId])
+
+
+    // блок фильтрации
+    let tasks = props.tasks
+
+    useMemo(() => {
+
+        console.log('useMemo')
+        if (props.filter === 'Active') {
+            tasks = tasks.filter(task => !task.isDone)
+        }
+
+        if (props.filter === 'Completed') {
+            tasks = tasks.filter(task => task.isDone)
+        }
+
+        return tasks
+    }, [props.filter]);
+
 
     return (
         <div>
             <h3>
-                {/*{props.title}*/}
                 <EditableSpan value={props.title} onChange={updateTodolistHandler}/>
 
                 <IconButton onClick={removeTodolistHandler}>
@@ -66,79 +86,57 @@ export const Todolist = (props: TodolistPropsType) => {
             <AddItemForm addItem={addTasksCallback}/>
 
             <div>
-                {props.tasks.length === 0 ? (
+                {tasks.length === 0 ? (
                     <p>Тасок нет</p>
                 ) : (
                     <List>
-                        {props.tasks.map(task => {
-
-                            const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                                const newStatusValue = e.currentTarget.checked
-                                props.changeTaskStatus(props.todolistId, task.id, newStatusValue)
-                            }
-                            const removeTaskHandler = () => {
-                                props.removeTask(props.todolistId, task.id)
-                            }
-                            const changeTaskTitleHandler = (newTitle: string) => {
-                                props.updateTask(props.todolistId, task.id, newTitle)
-                            }
-
+                        {tasks.map(task => {
 
                             return (
-                                <ListItem
+
+                                <Task
                                     key={task.id}
-                                    sx={getListItemSx(task.isDone)}
-
-
-                                    className={task.isDone ? 'is-done' : ''}>
-
-                                    <div>
-                                        <Checkbox
-                                            checked={task.isDone}
-                                            onChange={changeTaskStatusHandler}
-                                        />
-                                        <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
-                                    </div>
-
-                                    <IconButton onClick={removeTaskHandler}>
-                                        <DeleteIcon/>
-                                    </IconButton>
-
-                                </ListItem>
+                                    task={task}
+                                    todolistId={props.todolistId}
+                                    changeTaskStatus={props.changeTaskStatus}
+                                    removeTask={props.removeTask}
+                                    updateTask={props.updateTask}
+                                />
                             )
                         })}
                     </List>
                 )}
                 <Box sx={filterButtonsContainerSx}>
-                    <Button
+
+                    <ButtonMemo
+                        name={'All'}
                         variant={props.filter === 'All' ? 'outlined' : 'text'}
                         color={'inherit'}
                         onClick={() => changeFilterTasksHandler('All')}
                     >
-                        All
-                    </Button>
+                    </ButtonMemo>
 
-                    <Button
+                    <ButtonMemo
+                        name={'Active'}
                         variant={props.filter === 'Active' ? 'outlined' : 'text'}
                         color={'primary'}
                         onClick={() => changeFilterTasksHandler('Active')}
                     >
-                        Active
-                    </Button>
+                    </ButtonMemo>
 
-                    <Button
+                    <ButtonMemo
+                        name={'Completed'}
                         variant={props.filter === 'Completed' ? 'outlined' : 'text'}
                         color={'secondary'}
                         onClick={() => changeFilterTasksHandler('Completed')}
                     >
-                        Completed
-                    </Button>
+                    </ButtonMemo>
+
                 </Box>
             </div>
-
-
         </div>
     )
-}
+})
+
 
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.css';
 import {TasksType, Todolist} from "./Todolist";
 import {AddItemForm} from "./AddItemForm";
@@ -43,7 +43,6 @@ function AppWithRedux() {
     const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks);
 
 
-
     // add theme
     const theme = createTheme({
         palette: {
@@ -55,47 +54,49 @@ function AppWithRedux() {
     })
 
     // функция удаления таски
-    const removeTask = (todolistId: string, taskId: string) => {
+    const removeTask = useCallback((todolistId: string, taskId: string) => {
         const action = removeTaskAC(todolistId, taskId)
         dispatch(action)
-    }
+    }, [dispatch])
     // функция для фильтрации по кнопкам
-    const changeFilter = (todolistId: string, filter: FilterValuesType) => {
+    const changeFilter = useCallback((todolistId: string, filter: FilterValuesType) => {
         const action = changeTodolistFilterAC(todolistId, filter)
         dispatch(action)
-    }
+    }, [dispatch])
     // добавление таски
-    const addTask = (todolistId: string, nameTasks: string) => {
+    const addTask = useCallback((todolistId: string, nameTasks: string) => {
         const action = addTaskAC(todolistId, nameTasks)
         dispatch(action)
-    }
+    }, [dispatch])
     // state checkbox
-    const changeTaskStatus = (todolistId: string, taskId: string, taskStatus: boolean) => {
+    const changeTaskStatus = useCallback((todolistId: string, taskId: string, taskStatus: boolean) => {
         const action = changeTaskStatusAC(todolistId, taskId, taskStatus)
         dispatch(action)
-    }
+    }, [dispatch])
 
-    const removeTodolist = (todolistId: string) => {
+    const removeTodolist = useCallback((todolistId: string) => {
         const action = removeTodolistAC(todolistId)
         dispatch(action)
 
-    }
+    }, [dispatch])
 
-    // функчия добавления тудулиста
-    const addTodolist = (title: string) => {
+    // функция добавления тудулиста
+    const addTodolist = useCallback((title: string) => {
         const action = addTodolistAC(title)
         dispatch(action)
 
-    }
+    }, [dispatch])
 
-    const updateTask = (todolistId: string, taskId: string, newTitle: string) => {
+    const updateTask = useCallback((todolistId: string, taskId: string, newTitle: string) => {
         dispatch(changeTaskTitleAC(todolistId, taskId, newTitle))
-    }
+    }, [dispatch])
 
-    const updateTodolist = (todolistId: string, title: string) => {
+    const updateTodolist = useCallback((todolistId: string, title: string) => {
         const action = changeTodolistTitleAC(todolistId, title)
         dispatch(action)
-    }
+    }, [dispatch])
+
+
     // функционал о смене темы
     const changeModeHandler = () => {
         setThemeMode(themeMode === 'light' ? 'dark' : 'light')
@@ -131,26 +132,18 @@ function AppWithRedux() {
 
                         {todolists.map(tl => {
 
-                            // блок фильтрации
-                            let tasksForTodolist = tasks[tl.id]
-                            if (tl.filter === 'Active') {
-                                tasksForTodolist = tasks[tl.id].filter(task => !task.isDone)
-                            }
 
-                            if (tl.filter === 'Completed') {
-                                tasksForTodolist = tasks[tl.id].filter(task => task.isDone)
-                            }
 
                             return (
                                 <Grid>
                                     <Paper sx={{p: '0 20px 20px 20px'}}>
                                         <Todolist
+                                            tasks={tasks[tl.id]}
                                             updateTodolist={updateTodolist}
                                             updateTask={updateTask}
                                             key={tl.id}
                                             todolistId={tl.id}
                                             title={tl.title}
-                                            tasks={tasksForTodolist}
                                             removeTask={removeTask}
                                             changeFilter={changeFilter}
                                             addTask={addTask}
@@ -163,14 +156,9 @@ function AppWithRedux() {
                             )
                         })}
                     </Grid>
-
                 </Container>
-
             </ThemeProvider>
-
-
         </div>
     );
 }
-
 export default AppWithRedux;
