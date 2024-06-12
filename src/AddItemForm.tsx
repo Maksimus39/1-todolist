@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import AddBoxIcon from '@mui/icons-material/AddBox'
 
 
-type AddItemFormPropsType = {
+export type AddItemFormPropsType = {
     addItem: (nameTasks: string) => void,
 }
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
