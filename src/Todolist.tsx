@@ -47,11 +47,11 @@ export const Todolist = memo((props: TodolistPropsType) => {
     // функция обёртка для двух компонент
     const addTasksCallback = useCallback((nameTasks: string) => {
         props.addTask(props.todolistId, nameTasks)
-    }, [props.addTask, props.todolistId])
+    }, [props])
 
     const updateTodolistHandler = useCallback((title: string) => {
         props.updateTodolist(props.todolistId, title)
-    }, [props.updateTodolist, props.todolistId])
+    }, [props])
 
 
     // блок фильтрации
@@ -70,6 +70,7 @@ export const Todolist = memo((props: TodolistPropsType) => {
 
         return tasks
     }, [props.filter]);
+
 
 
     return (
