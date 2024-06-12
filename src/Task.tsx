@@ -8,7 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {TasksType} from "./Todolist";
 
 
-type TasksPropsType={
+export type TasksPropsType={
     task:TasksType
     todolistId: string
     changeTaskStatus: (todolistId: string, taskId: string, taskStatus: boolean) => void
