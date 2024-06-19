@@ -58,8 +58,8 @@ const TaskToggle = () => {
     }
 
 
-
-    return <Task task={task} todolistId={'bvjahvjsv'} changeTaskStatus={changeTaskStatus} removeTask={action('Remove task')} updateTask={changeTaskTitle}/>
+    return <Task task={task} todolistId={'bvjahvjsv'} changeTaskStatus={changeTaskStatus}
+                 removeTask={action('Remove task')} updateTask={changeTaskTitle}/>
 }
 export const TaskToggleStory: Story = {
     render: () => <TaskToggle/>
