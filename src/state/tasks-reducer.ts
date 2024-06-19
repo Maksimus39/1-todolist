@@ -7,15 +7,15 @@ export let todolistID1 = v1()
 export let todolistID2 = v1()
 
 const initialState: TasksStateType = {
-    [todolistID1]: [
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'ReactJS', isDone: false},
-    ],
-    [todolistID2]: [
-        {id: v1(), title: 'Rest API', isDone: true},
-        {id: v1(), title: 'GraphQL', isDone: false},
-    ],
+    // [todolistID1]: [
+    //     {id: v1(), title: 'HTML&CSS', isDone: true},
+    //     {id: v1(), title: 'JS', isDone: true},
+    //     {id: v1(), title: 'ReactJS', isDone: false},
+    // ],
+    // [todolistID2]: [
+    //     {id: v1(), title: 'Rest API', isDone: true},
+    //     {id: v1(), title: 'GraphQL', isDone: false},
+    // ],
 }
 
 export let tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
@@ -64,7 +64,6 @@ export let tasksReducer = (state: TasksStateType = initialState, action: Actions
         default:
             return state
     }
-
 }
 
 // Создание AC
