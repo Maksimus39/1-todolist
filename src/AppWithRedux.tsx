@@ -13,7 +13,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./state/todolist-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./state/store";
+import {AppRootStateType} from "./state/store";
 
 
 // Типизация для блока кнопок
@@ -39,8 +39,8 @@ function AppWithRedux() {
 
     // хуки из Redux
     const dispatch = useDispatch();
-    const todolists = useSelector<AppRootState, TodolistType[]>(state => state.todolist);
-    const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks);
+    const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolist);
+    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
 
 
     // add theme
